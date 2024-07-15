@@ -1,50 +1,53 @@
-import { useState } from 'react'
+
 import './App.css'
 
+import { createContext, useState, useEffect } from 'react'
+
 import { Routes, Route } from 'react-router-dom'
+
+import { getUserData } from './utils'
 
 import Navigation from './components/navigation/Navigation'
 import HomePage from './components/home-page/HomePage'
 import LoginPage from './components/login-page/LoginPage'
 import RegisterPage from './components/register-page/RegisterPage'
 import CreatePage from './components/create-page/CreatePage'
-import EditPage from './components/edit-page/EditPage'
-import DetailsPage from './components/details-page/DetailsPage'
 import CatalogPage from './components/catalog-page/CatalogPage'
+import LogoutPage from './components/logout-page/LogoutPage'
+
+export const UserContext = createContext(null);
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    console.log(user)
+  })
 
   return (
     <>
-      <div id="box">
-        <Navigation />
+      <UserContext.Provider value={[user, setUser]}>
 
-        <main id="main-content">
-          <Routes>
-            <Route path='/' element={<HomePage />} />
-            <Route path='/catalog' element={<CatalogPage />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/register' element={<RegisterPage />} />
-            <Route path='/create' element={<CreatePage />} />
-          </Routes>
-        </main>
+        <div id="box">
 
-        {/* <HomePage />
+          <Navigation />
 
-        <LoginPage />
+          <main id="main-content">
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/catalog' element={<CatalogPage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/logout' element={<LogoutPage />} />
+              <Route path='/register' element={<RegisterPage />} />
+              <Route path='/create' element={<CreatePage />} />
+            </Routes>
+          </main>
 
-        <RegisterPage />
+        </div>
 
-        <CreatePage />
+      </UserContext.Provider>
 
-        <EditPage />
-
-        <DetailsPage />
-
-        <CatalogPage /> */}
-
-      </div>
 
     </>
   )
