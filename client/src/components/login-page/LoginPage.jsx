@@ -4,9 +4,11 @@ import { UserContext } from "../../App"
 import * as authService from '../../api/auth'
 import { useNavigate } from "react-router-dom";
 
+import { isValid } from "../../utils";
+
 export default function LoginPage() {
 
-    const [user, setUser] = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const [loginValues, setLoginValues] = useState({
@@ -23,9 +25,15 @@ export default function LoginPage() {
 
     async function submitHandler(e) {
         e.preventDefault();
-        const user = await authService.login(loginValues.email, loginValues.password);
-        setUser(user);
-        navigate('/');
+        if (isValid(loginValues)) {
+            const user = await authService.login(loginValues.email, loginValues.password);
+            setUser(user);
+            navigate('/');
+            e.target.reset();
+        }
+        else {
+            alert("All fields are required!");
+        }
     }
 
     return (
@@ -43,7 +51,7 @@ export default function LoginPage() {
                         onChange={changeHandler}
                         value={loginValues.email}
                     />
-                    <label htmlFor="login-pass">Password:</label>
+                    <label htmlFor="login-password">Password:</label>
                     <input
                         type="password"
                         id="login-password"

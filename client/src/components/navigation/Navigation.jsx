@@ -4,7 +4,7 @@ import { UserContext } from "../../App"
 
 export default function Navigation() {
 
-    const [user, setUser] = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     return (
         <header>

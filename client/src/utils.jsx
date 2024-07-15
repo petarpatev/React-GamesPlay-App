@@ -18,3 +18,7 @@ export const getToken = () => {
         return null;
     }
 }
+
+export const isValid = (data) => {
+    return !Object.values(data).some(x => x == '');
+}

@@ -2,10 +2,7 @@
 import './App.css'
 
 import { createContext, useState, useEffect } from 'react'
-
 import { Routes, Route } from 'react-router-dom'
-
-import { getUserData } from './utils'
 
 import Navigation from './components/navigation/Navigation'
 import HomePage from './components/home-page/HomePage'
@@ -22,12 +19,12 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
   })
 
   return (
     <>
-      <UserContext.Provider value={[user, setUser]}>
+      <UserContext.Provider value={{user, setUser}}>
 
         <div id="box">
 

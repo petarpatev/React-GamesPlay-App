@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function LogoutPage() {
 
-    const [user, setUser] = useContext(UserContext);
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const confirmHandler = async () => {
