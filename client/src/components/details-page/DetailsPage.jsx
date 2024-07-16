@@ -1,20 +1,40 @@
+import { useParams } from "react-router-dom"
+import { useContext, useEffect, useState } from "react";
+import * as gamesService from "../../api/games"
+import { UserContext } from "../../App";
+
 export default function DetailsPage() {
+
+    const gameId = useParams().gameId;
+    const user = useContext(UserContext);
+
+    const [game, setGame] = useState(null);
+    const [isOwner, setIsOwner] = useState(false);
+
+    useEffect(() => {
+        (async function getGame() {
+            const game = await gamesService.getOne(gameId);
+            setGame(game)
+            if (user) {
+                setIsOwner(game._ownerId == user.user._id);
+            }
+        })()
+    }, [gameId]);
+
+    if (!game) return <div>Loading...</div>
+
     return (
         <section id="game-details">
             <h1>Game Details</h1>
             <div className="info-section">
                 <div className="game-header">
-                    <img className="game-img" src="images/MineCraft.png" />
-                    <h1>Bright</h1>
-                    <span className="levels">MaxLevel: 4</span>
-                    <p className="type">Action, Crime, Fantasy</p>
+                    <img className="game-img" src={game.imageUrl} alt={game.title} />
+                    <h1>{game.title}</h1>
+                    <span className="levels">MaxLevel: {game.maxLevel}</span>
+                    <p className="type">{game.category}</p>
                 </div>
                 <p className="text">
-                    Set in a world where fantasy creatures live side by side with humans. A
-                    human cop is forced to work with an Orc to find a weapon everyone is
-                    prepared to kill for. Set in a world where fantasy creatures live side
-                    by side with humans. A human cop is forced to work with an Orc to find a
-                    weapon everyone is prepared to kill for.
+                    {game.summary}
                 </p>
                 {/* Bonus ( for Guests and Users ) */}
                 <div className="details-comments">
@@ -32,32 +52,18 @@ export default function DetailsPage() {
                     <p className="no-comment">No comments.</p>
                 </div>
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
-                <div className="buttons">
-                    <a href="#" className="button">
-                        Edit
-                    </a>
-                    <a href="#" className="button">
-                        Delete
-                    </a>
-                </div>
+                {isOwner &&
+                    <div className="buttons">
+                        <a href="#" className="button">
+                            Edit
+                        </a>
+                        <a href="#" className="button">
+                            Delete
+                        </a>
+                    </div>
+                }
             </div>
-            {/* Bonus */}
-            {/* Add Comment ( Only for logged-in users, which is not creators of the current game ) */}
-            <article className="create-comment">
-                <label>Add new comment:</label>
-                <form className="form">
-                    <textarea
-                        name="comment"
-                        placeholder="Comment......"
-                        defaultValue={""}
-                    />
-                    <input
-                        className="btn submit"
-                        type="submit"
-                        defaultValue="Add Comment"
-                    />
-                </form>
-            </article>
+
         </section>
     )
 }

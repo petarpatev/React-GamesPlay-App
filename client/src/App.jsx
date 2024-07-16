@@ -11,6 +11,7 @@ import RegisterPage from './components/register-page/RegisterPage'
 import CreatePage from './components/create-page/CreatePage'
 import CatalogPage from './components/catalog-page/CatalogPage'
 import LogoutPage from './components/logout-page/LogoutPage'
+import DetailsPage from './components/details-page/DetailsPage'
 import { clearUserData, getUserData, setUserData } from './utils'
 
 export const UserContext = createContext(null);
@@ -25,7 +26,7 @@ function App() {
 
 
   useEffect(() => {
-    if(user) {
+    if (user) {
       setUserData(user);
     } else {
       clearUserData()
@@ -48,6 +49,7 @@ function App() {
               <Route path='/logout' element={<LogoutPage />} />
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/create' element={<CreatePage />} />
+              <Route path='/details/:gameId' element={<DetailsPage />} />
             </Routes>
           </main>
 

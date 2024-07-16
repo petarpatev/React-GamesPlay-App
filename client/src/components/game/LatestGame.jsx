@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom"
 
 export default function LatestGame({ latestGame }) {
     return (
@@ -15,9 +15,9 @@ export default function LatestGame({ latestGame }) {
                 <span>☆</span>
             </div>
             <div className="data-buttons">
-                <a href="#" className="btn details-btn">
+                <Link to={`/details/${latestGame._id}`} className="btn details-btn">
                     Details
-                </a>
+                </Link>
             </div>
         </div>
     )
