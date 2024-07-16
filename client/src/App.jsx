@@ -11,20 +11,30 @@ import RegisterPage from './components/register-page/RegisterPage'
 import CreatePage from './components/create-page/CreatePage'
 import CatalogPage from './components/catalog-page/CatalogPage'
 import LogoutPage from './components/logout-page/LogoutPage'
+import { clearUserData, getUserData, setUserData } from './utils'
 
 export const UserContext = createContext(null);
 
 function App() {
 
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const savedUser = getUserData();
+    return savedUser ? savedUser : null
+  });
+
+
 
   useEffect(() => {
-    console.log(user);
-  })
+    if(user) {
+      setUserData(user);
+    } else {
+      clearUserData()
+    }
+  }, [user])
 
   return (
     <>
-      <UserContext.Provider value={{user, setUser}}>
+      <UserContext.Provider value={{ user, setUser }}>
 
         <div id="box">
 
