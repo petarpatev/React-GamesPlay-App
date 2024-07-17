@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
 import * as gamesService from "../../api/games"
 import { UserContext } from "../../App";
@@ -12,6 +12,8 @@ export default function DetailsPage() {
     const [game, setGame] = useState(null);
     const [isOwner, setIsOwner] = useState(false);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
         (async function getGame() {
             const game = await gamesService.getOne(gameId);
@@ -21,6 +23,14 @@ export default function DetailsPage() {
             }
         })()
     }, [gameId]);
+
+    async function onDeleteHandler() {
+        const choice = confirm('Are you sure you want to delete this game?');
+        if (choice) {
+            await gamesService.removeGame(game._id);
+            navigate('/');
+        }
+    }
 
     if (!game) return <div>Loading...</div>
 
@@ -52,13 +62,12 @@ export default function DetailsPage() {
                     {/* Display paragraph: If there are no games in the database */}
                     <p className="no-comment">No comments.</p>
                 </div>
-                {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 {isOwner &&
                     <div className="buttons">
                         <Link to={`/edit/${game._id}`} className="button">
                             Edit
                         </Link>
-                        <Link to="#" className="button">
+                        <Link onClick={onDeleteHandler} to="#" className="button">
                             Delete
                         </Link>
                     </div>
