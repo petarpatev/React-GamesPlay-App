@@ -13,6 +13,7 @@ import CatalogPage from './components/catalog-page/CatalogPage'
 import LogoutPage from './components/logout-page/LogoutPage'
 import DetailsPage from './components/details-page/DetailsPage'
 import { clearUserData, getUserData, setUserData } from './utils'
+import EditPage from './components/edit-page/EditPage'
 
 export const UserContext = createContext(null);
 
@@ -50,6 +51,7 @@ function App() {
               <Route path='/register' element={<RegisterPage />} />
               <Route path='/create' element={<CreatePage />} />
               <Route path='/details/:gameId' element={<DetailsPage />} />
+              <Route path='/edit/:gameId' element={<EditPage />} />
             </Routes>
           </main>
 

@@ -4,7 +4,8 @@ const endpoints = {
     getAll: '/data/games?sortBy=_createdOn%20desc',
     latestThree: '/data/games?sortBy=_createdOn%20desc&distinct=category',
     createGame: '/data/games',
-    getOne: '/data/games/'
+    getOne: '/data/games/',
+    editGame: '/data/games/'
 }
 
 export const getAll = async () => {
@@ -21,4 +22,8 @@ export const createGame = async (gameData) => {
 
 export const getOne = async (gameId) => {
     return apiService.get(endpoints.getOne + gameId);
+}
+
+export const editGame = async (gameId, gameData) => {
+    return apiService.put(endpoints.editGame + gameId, gameData)
 }

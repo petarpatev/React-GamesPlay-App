@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
 import * as gamesService from "../../api/games"
 import { UserContext } from "../../App";
+import { Link } from "react-router-dom";
 
 export default function DetailsPage() {
 
@@ -54,12 +55,12 @@ export default function DetailsPage() {
                 {/* Edit/Delete buttons ( Only for creator of this game )  */}
                 {isOwner &&
                     <div className="buttons">
-                        <a href="#" className="button">
+                        <Link to={`/edit/${game._id}`} className="button">
                             Edit
-                        </a>
-                        <a href="#" className="button">
+                        </Link>
+                        <Link to="#" className="button">
                             Delete
-                        </a>
+                        </Link>
                     </div>
                 }
             </div>
