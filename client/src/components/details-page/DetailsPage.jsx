@@ -1,28 +1,43 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
 import * as gamesService from "../../api/games"
+import * as commentsService from "../../api/comments"
 import { UserContext } from "../../App";
 import { Link } from "react-router-dom";
+
+import CreateComment from "../comments/CreateComment";
 
 export default function DetailsPage() {
 
     const gameId = useParams().gameId;
-    const user = useContext(UserContext);
+    const { user } = useContext(UserContext);
 
     const [game, setGame] = useState(null);
+    const [comments, setComments] = useState([]);
     const [isOwner, setIsOwner] = useState(false);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         (async function getGame() {
-            const game = await gamesService.getOne(gameId);
+            const [game, comments] = await Promise.all([
+                gamesService.getOne(gameId),
+                commentsService.getById(gameId)
+            ]);
             setGame(game)
+            setComments(comments)
             if (user) {
-                setIsOwner(game._ownerId == user.user._id);
+                setIsOwner(game._ownerId == user._id);
             }
         })()
     }, [gameId]);
+
+    function onAddComment(newComment) {
+        setComments(old => ([
+            ...old,
+            newComment
+        ]))
+    }
 
     async function onDeleteHandler() {
         const choice = confirm('Are you sure you want to delete this game?');
@@ -50,17 +65,15 @@ export default function DetailsPage() {
                 {/* Bonus ( for Guests and Users ) */}
                 <div className="details-comments">
                     <h2>Comments:</h2>
+
                     <ul>
-                        {/* list all comments for current game (If any) */}
-                        <li className="comment">
-                            <p>Content: I rate this one quite highly.</p>
-                        </li>
-                        <li className="comment">
-                            <p>Content: The best game.</p>
-                        </li>
+                        {comments.length > 0
+                            ? comments.map(comment => <li key={comment._id} className="comment">
+                                <p>Content: {comment.comment}</p>
+                            </li>)
+
+                            : <p className="no-comment">No comments.</p>}
                     </ul>
-                    {/* Display paragraph: If there are no games in the database */}
-                    <p className="no-comment">No comments.</p>
                 </div>
                 {isOwner &&
                     <div className="buttons">
@@ -72,6 +85,7 @@ export default function DetailsPage() {
                         </Link>
                     </div>
                 }
+                {(user && !isOwner) && <CreateComment gameId={gameId} onAddComment={onAddComment} />}
             </div>
 
         </section>
