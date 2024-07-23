@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom"
 import { useContext, useEffect, useState } from "react";
 import * as gamesService from "../../api/games"
 import * as commentsService from "../../api/comments"
-import { UserContext } from "../../App";
+import { UserContext } from "../../contexts/user";
 import { Link } from "react-router-dom";
 
 import CreateComment from "../comments/CreateComment";

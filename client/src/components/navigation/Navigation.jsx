@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
-import { useContext, useEffect } from "react"
-import { UserContext } from "../../App"
+import { useContext } from "react"
+import { UserContext } from "../../contexts/user"
 
 export default function Navigation() {
 

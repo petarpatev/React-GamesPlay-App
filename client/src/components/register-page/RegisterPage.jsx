@@ -1,5 +1,5 @@
-import { useState, useContext, useEffect } from "react"
-import { UserContext } from "../../App"
+import { useState, useContext } from "react"
+import { UserContext } from "../../contexts/user"
 
 import * as authService from '../../api/auth'
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { isValid } from "../../utils";
 
 export default function RegisterPage() {
 
-    const { setUser } = useContext(UserContext);
+    const { setUserWrapper } = useContext(UserContext);
     const navigate = useNavigate();
 
     const [registerValues, setRegisterValues] = useState({
@@ -28,7 +28,7 @@ export default function RegisterPage() {
         e.preventDefault();
         if (isValid(registerValues)) {
             const user = await authService.register(registerValues.email, registerValues.password);
-            setUser(user);
+            setUserWrapper(user);
             navigate('/');
             e.target.reset();
         }
