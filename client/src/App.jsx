@@ -1,9 +1,7 @@
 
 import './App.css'
-
-import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { UserContext } from './contexts/user'
+import { UserProvider } from './contexts/user'
 
 import Navigation from './components/navigation/Navigation'
 import HomePage from './components/home-page/HomePage'
@@ -13,31 +11,13 @@ import CreatePage from './components/create-page/CreatePage'
 import CatalogPage from './components/catalog-page/CatalogPage'
 import LogoutPage from './components/logout-page/LogoutPage'
 import DetailsPage from './components/details-page/DetailsPage'
-import { clearUserData, getUserData, setUserData } from './utils'
 import EditPage from './components/edit-page/EditPage'
 
 function App() {
 
-  const [user, setUser] = useState(() => {
-    const savedUser = getUserData();
-    return savedUser ? savedUser : null
-  });
-
-  const setUserWrapper = (data) => {
-    setUser(data);
-  }
-
-  useEffect(() => {
-    if (user) {
-      setUserData(user);
-    } else {
-      clearUserData()
-    }
-  }, [user])
-
   return (
     <>
-      <UserContext.Provider value={{ user, setUserWrapper }}>
+      <UserProvider>
 
         <div id="box">
 
@@ -58,7 +38,7 @@ function App() {
 
         </div>
 
-      </UserContext.Provider>
+      </UserProvider>
 
 
     </>
